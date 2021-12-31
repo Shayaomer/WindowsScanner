@@ -61,3 +61,14 @@ class CveParser:
             severity = impact['baseMetricV2']['severity']
 
         return severity
+
+    def get_all_cpe23_uri(self):
+        for year in self.cve_collections_for_all_years:
+            for year2 in self.cve_collections_for_all_years[year]['CVE_Items']:
+                for cpe in year2['configurations']['nodes'][0]['cpe_match']:
+                    yield cpe['cpe23Uri']
+
+if __name__ == '__main__':
+    a = CveParser()
+    for i in a.get_all_cpe23_uri():
+        print(i)
