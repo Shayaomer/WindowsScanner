@@ -56,4 +56,6 @@ def unzip_file(file_name, directory_to_extract=None):
         zip_ref.extractall(directory_to_extract)
     os.remove(file_name)  # removing the .zip file
 
-
+# if __name__ == '__main__':
+#     a = DownloadDb()
+#     print(a.cve_dict)
