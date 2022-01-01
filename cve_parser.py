@@ -62,7 +62,7 @@ class CveParser:
 
         return severity
 
-    def get_all_cpe23_uri(self):
+    def get_all_cpe23_uri(self):    # Generator that yield a CPE-23 Uri from the CVE dict
         for year in self.cve_collections_for_all_years:
             for year2 in self.cve_collections_for_all_years[year]['CVE_Items']:
                 if len(year2['configurations']['nodes']) != 0:
