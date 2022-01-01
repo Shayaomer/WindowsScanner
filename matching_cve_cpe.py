@@ -13,7 +13,16 @@ class MatcherCveCpe:
         print('hello')
 
     def match_cve_cpe(self):
-        yield 0
+        # Initialize data frame items
+        sftw_names = list(self.cpe_data_dict['registry_sw'].values())
+        cpe_title = list(self.cpe_data_dict['cpe_23_names'].values())
+        sim_score = list(self.cpe_data_dict['sim_score'].values())
+
+        
+
+
+
+
 
 if __name__ == '__main__':
     a = MatcherCveCpe()

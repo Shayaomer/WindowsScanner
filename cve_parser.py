@@ -64,10 +64,10 @@ class CveParser:
 
     def get_all_cpe23_uri(self):    # Generator that yield a CPE-23 Uri from the CVE dict
         for year in self.cve_collections_for_all_years:
-            for year2 in self.cve_collections_for_all_years[year]['CVE_Items']:
-                if len(year2['configurations']['nodes']) != 0:
-                    for cpe in year2['configurations']['nodes'][0]['cpe_match']:
-                        yield cpe['cpe23Uri']
+            for cpe_item in self.cve_collections_for_all_years[year]['CVE_Items']:
+                if len(cpe_item['configurations']['nodes']) != 0:
+                    for cpe in cpe_item['configurations']['nodes'][0]['cpe_match']:
+                        yield [cpe['cpe23Uri'], cpe_item]
 
 if __name__ == '__main__':
     a = CveParser()
