@@ -120,6 +120,7 @@ class CpeSwFitter:
                                     relevant_docs["sim_score"].iloc[i]])
         final_res = pd.DataFrame(final_res)
         final_res.columns = ["registry_sw", "cpe_23_names", "titles", "sim_score"]
+        return final_res.to_dict()
         final_res.to_csv('retrieved_{}.csv'.format(self.sim_func_name))
         print(final_res)
         print("end")
