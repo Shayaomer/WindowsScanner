@@ -1,5 +1,6 @@
 import cve_parser as cveP
 import searchEngine as sEngine
+import pandas as pd
 
 class MatcherCveCpe:
     def __init__(self):
@@ -15,10 +16,13 @@ class MatcherCveCpe:
     def match_cve_cpe(self):
         # Initialize data frame items
         sftw_names = list(self.cpe_data_dict['registry_sw'].values())
-        cpe_title = list(self.cpe_data_dict['cpe_23_names'].values())
+        cpe_23_names = list(self.cpe_data_dict['cpe_23_names'].values())
         sim_score = list(self.cpe_data_dict['sim_score'].values())
+        asso_cve = []
+        df = pd.DataFrame([sftw_names, cpe_23_names, sim_score, asso_cve]).transpose()
+        df.columns = ['sftw_name', 'cpe_23', 'sim_score', 'asso_cve']
 
-        
+
 
 
 
