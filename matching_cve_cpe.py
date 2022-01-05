@@ -38,7 +38,7 @@ class MatcherCveCpe:
                     for index, row in df.loc[df['cpe_23'] == row_temp['cpe_23'], ['asso_cve']].iterrows():
                         row['asso_cve'].append(next_cve[1])
         for index, row in df.loc[:, ['asso_cve']].iterrows():
-            row['asso_cve'] = list(dict.fromkeys(row['asso_cve']))
+            df.asso_cve[index] = list(dict.fromkeys(df.asso_cve[index]))
         df.to_csv('result.csv')
         return df
 
