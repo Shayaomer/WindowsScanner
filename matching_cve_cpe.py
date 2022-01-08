@@ -37,21 +37,11 @@ class MatcherCveCpe:
                 for index_temp, row_temp in temp_df.iterrows():
                     for index, row in df.loc[df['cpe_23'] == row_temp['cpe_23'], ['asso_cve']].iterrows():
                         row['asso_cve'].append(next_cve[1])
+        print('Finished matching! Removing duplicates...')
         for index, row in df.loc[:, ['asso_cve']].iterrows():
             df.asso_cve[index] = list(dict.fromkeys(df.asso_cve[index]))
         df.to_csv('result.csv')
         return df
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
