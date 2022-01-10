@@ -31,15 +31,10 @@ class MatcherCveCpe:
 
         # Matching process
         cve_gen = self.cve_funcs.get_all_cpe23_uri()
-        for next_cve in tqdm(cve_gen):
-            temp_df = df[df.cpe_23 == next_cve[0]]
-            if not temp_df.empty:
-                for index_temp, row_temp in temp_df.iterrows():
-                    for index, row in df.loc[df['cpe_23'] == row_temp['cpe_23'], ['asso_cve']].iterrows():
-                        row['asso_cve'].append(next_cve[1])
-        print('Finished matching! Removing duplicates...')
-        for index, row in df.loc[:, ['asso_cve']].iterrows():
-            df.asso_cve[index] = list(dict.fromkeys(df.asso_cve[index]))
+        _dict = {}
+        for cpe_23, cve_id in tqdm(cve_gen, desc="Matching"):
+            _dict[cpe_23] = _dict.get(cpe_23, []) + [cve_id]
+        df['asso_cve'] = df['cpe_23'].apply(lambda x: _dict[x] if x in _dict else [])
         df.to_csv('result.csv')
         return df
 

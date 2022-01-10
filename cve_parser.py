@@ -67,7 +67,7 @@ class CveParser:
             for cve_item in self.cve_collections_for_all_years[year]['CVE_Items']:
                 if len(cve_item['configurations']['nodes']) != 0:
                     for cpe in cve_item['configurations']['nodes'][0]['cpe_match']:
-                        yield [cpe['cpe23Uri'], cve_item['cve']['CVE_data_meta']['ID']]
+                        yield (cpe['cpe23Uri'], cve_item['cve']['CVE_data_meta']['ID'])
 
 if __name__ == '__main__':
     a = CveParser()
