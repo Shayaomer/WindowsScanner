@@ -1,10 +1,11 @@
 import os
-
+from db import collection
 from installed_softwares import InstalledSoftware
 from xmlParser import CpeXmlParser
 from matching_cve_cpe import MatcherCveCpe
 from download_db import DownloadDb
 import download_db
+import socket
 
 def execute():
     if not os.path.isfile('official-cpe-dictionary_v2.3.xml'):
@@ -25,8 +26,10 @@ def execute():
         b.csv_creator('official-cpe-dictionary_v2.3.xml')
     print('Start the CVE-CPE matching process...')
     c = MatcherCveCpe()
-    print(c.match_cve_cpe())
+    return { '_id': socket.gethostname(),
+        'data': c}
 
 
 if __name__ == '__main__':
-    execute()
+    post = execute()
+    collection.insert_one(post)
