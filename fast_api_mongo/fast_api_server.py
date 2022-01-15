@@ -1,16 +1,14 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from db import comp_db, collection
+import json
+import socket
 
 app = FastAPI()
 
 class Comp(BaseModel):
     comp_name: str
-
-
-comp_id_collection = {
-    '_id':
-}
+    data: json
 
 @app.get('/')
 def home():

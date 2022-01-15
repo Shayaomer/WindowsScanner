@@ -1,31 +1,32 @@
 import os
 
-import get_files_programfiles
-from cve_parser import CveParser
 from installed_softwares import InstalledSoftware
-from searchEngine import SearchEngineBuilder, CpeSwFitter
 from xmlParser import CpeXmlParser
+from matching_cve_cpe import MatcherCveCpe
+from download_db import DownloadDb
 import download_db
 
-
-if __name__ == '__main__':
+def execute():
     if not os.path.isfile('official-cpe-dictionary_v2.3.xml'):
+        print("Downloading CVE data...")
+        a = DownloadDb()
+        print("Downloading CPE data...")
         download_db.download_file()
         download_db.unzip_file('official-cpe-dictionary_v2.3.xml.zip', directory_to_extract=None)
 
     if not os.path.isfile("registry_data.json"):
+        print('Getting installed softwares...')
         i_s = InstalledSoftware()
         i_s.dump_software_lst_to_json(["Publisher", 'DisplayVersion', 'DisplayName'])
 
     if not os.path.isfile("parsed_xml.csv"):
-        a = CpeXmlParser('official-cpe-dictionary_v2.3.xml')
-        a.csv_creator('official-cpe-dictionary_v2.3.xml')
+        print('Parsing the CPE data...')
+        b = CpeXmlParser('official-cpe-dictionary_v2.3.xml')
+        b.csv_creator('official-cpe-dictionary_v2.3.xml')
+    print('Start the CVE-CPE matching process...')
+    c = MatcherCveCpe()
+    print(c.match_cve_cpe())
 
-    # if not os.path.isfile("retrieved_cosin.csv"):
-    sim_func_names_list = ["cosin"]
-    for func in sim_func_names_list:
-        search_builder = SearchEngineBuilder()
-        search_builder.create_models("parsed_xml.csv", func)
-        cpe_sw_fitter = CpeSwFitter("parsed_xml.csv", func)
-        cpe_sw_fitter.fit_all(5)
-    print("end")
+
+if __name__ == '__main__':
+    execute()
