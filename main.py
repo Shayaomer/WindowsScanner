@@ -7,6 +7,7 @@ from download_db import DownloadDb
 import download_db
 import socket
 
+
 def execute():
     if not os.path.isfile('official-cpe-dictionary_v2.3.xml'):
         print("Downloading CVE data...")
@@ -27,8 +28,8 @@ def execute():
     print('Start the CVE-CPE matching process...')
     c = MatcherCveCpe()
     res_json = c.match_cve_cpe()
-    return { '_id': socket.gethostname(),
-        '_data': res_json}
+    return {'_id': socket.gethostname(),
+            '_data': res_json}
 
 
 if __name__ == '__main__':
