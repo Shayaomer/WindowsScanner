@@ -2,6 +2,7 @@ import cve_parser as cveP
 import searchEngine as sEngine
 import pandas as pd
 from tqdm import tqdm
+import json
 
 
 class MatcherCveCpe:
@@ -32,12 +33,20 @@ class MatcherCveCpe:
         for cpe_23, cve_id in tqdm(cve_gen, desc="Matching CPE-CVE"):
             _dict[cpe_23] = _dict.get(cpe_23, []) + [cve_id]
         df['asso_cve'] = df['cpe_23'].apply(lambda x: _dict[x] if x in _dict else [])
+        json_res = self.organize_df_make_json(df)
         df.to_csv('result.csv')
-        return df
+        return json_res
+
+    def organize_df_make_json(self, df):
+        final_res = {}
+        df = df.drop(df[df.sim_score < 0.5].index)
+        df = df[df['asso_cve'].map(lambda d: len(d)) > 0]
+        for index, row in df.iterrows():
+            final_res[row['sftw_name']] = row['asso_cve']
+        with open('json_final_res.json', 'w') as jf:
+            json.dump(final_res, jf)
+        return json.dumps(final_res, sort_keys=True)
 
 
-if __name__ == '__main__':
-    a = MatcherCveCpe()
-    print(a.match_cve_cpe())
 
 
