@@ -45,7 +45,7 @@ class MatcherCveCpe:
             final_res[row['sftw_name']] = row['asso_cve']
         with open('json_final_res.json', 'w') as jf:
             json.dump(final_res, jf)
-        return json.dumps(final_res, sort_keys=True)
+        return json.dumps(final_res, indent=4, sort_keys=True)
 
 
 
