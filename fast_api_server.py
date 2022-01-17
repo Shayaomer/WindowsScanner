@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from db import collection
 from main import execute
 import socket
@@ -11,8 +10,8 @@ app = FastAPI()
 
 @app.get('/')
 def home():
-    return 'Hello, you can upload your scan at endpoint /upload_data ' \
-           'and you can ask for a previous scan using a computer name at /get_data'
+    return 'Hello, you can scan and upload at endpoint /scan_and_upload' \
+           'and you can ask for a previous scan using a computer name at /get_data/{computer_name}'
 
 
 @app.get('/get_data/{comp_name}')
@@ -31,5 +30,5 @@ def scan_and_upload():
     else:
         collection.delete_one({'_id': comp_name})
         collection.insert_one(c)
-    return {'val': 'success'}
+    return {'val': 'Scan has been uploaded to the database.'}
 
