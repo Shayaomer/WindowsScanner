@@ -4,6 +4,8 @@ from db import collection
 from main import execute
 import socket
 import json
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -23,14 +25,12 @@ def home():
            'and you can ask for a previous scan using a computer name at /get_data'
 
 
-# Uploads the final_res.json from the folder
-@app.get('/upload_data')
-def upload_data():
-    c = Comp()
-    with open('./json_final_res.json', 'r') as f:
-        c.data = json.load(f)
-        collection.insert_one({c})
-    return {'File upload success'}
+@app.get('/get_data/{comp_name}')
+def get_data(comp_name: str):
+    data = json.dumps(collection.find_one({'_id': comp_name}))
+    parsed = json.loads(data)
+    parsed['_data'] = json.loads(parsed['_data'])
+    return parsed
 
 
 @app.get('/scan_and_upload')
@@ -39,7 +39,3 @@ def scan_and_upload():
     c.data = execute()
     collection.insert_one({c})
 
-
-@app.get('/get_data/{comp_id}')
-def get_data(comp_id: str):
-    return collection.find_one({'_id': comp_id})
