@@ -26,9 +26,14 @@ class FindFiles:
                         return '\\'.join(splitted).replace('"','')
         return 'NO PATH'
 
+    def make_path_dict_by_name(self):
+        lst = self.dir_file_list()
+        ret_dict = {}
+        for i in range(len(lst[0])):
+            ret_dict[lst[0][i]] = self.sftw_name_to_dir(lst[0][i])
+        return ret_dict
 
 if __name__ == '__main__':
     a = FindFiles()
-    lst = a.dir_file_list()
-    for i in range(len(lst[0])):
-        print(i ,': ' + a.sftw_name_to_dir(lst[0][i]))
+    print(a.make_path_dict_by_name())
+
