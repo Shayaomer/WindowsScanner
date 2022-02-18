@@ -107,11 +107,12 @@ class CpeSwFitter:
         for col in tqdm(self.registry_data):
             query = self.registry_data[col].str.cat(sep=' ', na_rep='')
             relevant_docs = self.searcher(query, num_to_retrieve)
+            sftw_name = self.registry_data[col]['DisplayName']
             for i in range(len(relevant_docs)):
                 if relevant_docs.empty:
-                    final_res.append([query, None, None, 0])
+                    final_res.append([sftw_name, None, None, 0])
                 else:
-                    final_res.append([query, relevant_docs["cpe_23_names"].iloc[i], relevant_docs["titles"].iloc[i],
+                    final_res.append([sftw_name, relevant_docs["cpe_23_names"].iloc[i], relevant_docs["titles"].iloc[i],
                                     relevant_docs["sim_score"].iloc[i]])
         final_res = pd.DataFrame(final_res)
         final_res.columns = ["registry_sw", "cpe_23_names", "titles", "sim_score"]
