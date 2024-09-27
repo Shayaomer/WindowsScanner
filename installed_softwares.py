@@ -86,14 +86,15 @@ class InstalledSoftware:
                     len_cols = len_cols - 1
                     col -= 1
 
-    def dump_software_lst_to_json(self, requested_fields_lst):
+    def dump_software_lst_to_json(self, requested_fields_lst, file_name = 'registry_data.json', dump = True):
         final_lst = []
         for field in requested_fields_lst:
             self.requested_data_field = field
             final_lst.append(self.get_installed_software())
         self.remove_empty_list_items(final_lst)
-
-        df = pd.DataFrame(data=final_lst)
-        df = df.rename(index={df.index[i]: requested_fields_lst[i] for i in range(len(requested_fields_lst))})
-        df.to_json("registry_data.json")
-
+        if dump:
+            df = pd.DataFrame(data=final_lst)
+            df = df.rename(index={df.index[i]: requested_fields_lst[i] for i in range(len(requested_fields_lst))})
+            df.to_json(file_name)
+        else:
+            return final_lst
